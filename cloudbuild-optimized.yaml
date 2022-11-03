@@ -1,0 +1,59 @@
+steps:
+  # Pull to use as cache
+  - name: 'gcr.io/cloud-builders/docker'
+    id: 'cache-img'
+    entrypoint: 'bash'
+    args: ['-c', 'docker pull gcr.io/$PROJECT_ID/$_PROJECT_NAME:latest || exit 0']
+
+  - name: 'gcr.io/cloud-builders/docker'
+    id: 'cache-cloud-sdk'
+    entrypoint: 'bash'
+    args: ['-c', 'docker pull gcr.io/google.com/cloudsdktool/cloud-sdk']
+    waitFor: ['-']
+
+  # Build
+  - name: 'gcr.io/cloud-builders/docker'
+    id: 'build'
+    args: [ 'build',
+            '-t', 'gcr.io/${PROJECT_ID}/$_PROJECT_NAME:latest', 
+            '-t', '$_PROJECT_NAME:latest', 
+            '--cache-from', 'gcr.io/$PROJECT_ID/$_PROJECT_NAME:latest',
+            '.']
+    waitFor: ['cache-img']
+
+  # Run tests
+  - name: 'gcr.io/cloud-builders/docker'
+    args: [ 'run', '--entrypoint', 'python',
+            '$_PROJECT_NAME:latest', 
+            '-m', 'unittest', 'discover']
+    waitFor: ['build']
+  
+  # Docker Push
+  - name: 'gcr.io/cloud-builders/docker'
+    id: 'push'
+    args: ['push', 
+           'gcr.io/$PROJECT_ID/$_PROJECT_NAME:latest']
+    waitFor: ['build']
+
+  ## Scan image - we can scan our image
+  ## or have automatic scanning, refer to:
+  ## https://cloud.google.com/container-analysis/docs/automated-scanning-howto
+  # - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+  #   entrypoint: 'gcloud'
+  #   args: ['artifacts', 'docker', 'images', 'scan',
+  #          'gcr.io/${PROJECT_ID}/$_PROJECT_NAME:latest']
+  
+  # Deploy
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    entrypoint: 'gcloud'
+    args: ['run', 'deploy', '$_PROJECT_NAME',
+           '--image=gcr.io/${PROJECT_ID}/$_PROJECT_NAME:latest',
+           '--region=us-central1']
+    waitFor: ['push', 'cache-cloud-sdk']
+
+
+substitutions:
+  _PROJECT_NAME: 'rickandmorty-api'
+## we can use higher cpu machines
+# options:
+#   machineType: 'N1_HIGHCPU_8'
