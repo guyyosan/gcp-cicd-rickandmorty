@@ -1,4 +1,4 @@
-# rickandmorty
+# GCP CI/CD Demo rickandmorty app & Pipeline
 
 ### how to build the docker image
 docker build . -t rickandmorty
