@@ -1,6 +1,8 @@
 # GCP CI/CD Demo rickandmorty app & Pipeline
 
 ### how to build the docker image
+gcloud builds submit -t gcr.io/$GCP_PROJECT/rickandmorty-api .
+
 docker build . -t rickandmorty
 
 ### how to run the image
