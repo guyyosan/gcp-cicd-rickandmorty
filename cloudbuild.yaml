@@ -1,11 +1,11 @@
 steps:
   # Install dependencies
-  - name: python
+  - name: python3.9
     entrypoint: pip
     args: ["install", "-r", "requirements.txt", "--user"]
 
   # Run unit tests
-  - name: python
+  - name: python3.9
     entrypoint: python
     args: ["-m", "unittest", "discover"] 
   
