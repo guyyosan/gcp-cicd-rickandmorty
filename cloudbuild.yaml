@@ -2,7 +2,7 @@ steps:
   # Install dependencies
   - name: python:3.9
     entrypoint: pip
-    args: ["install", "-r", "requirements.txt", "--user"]
+    args: ["install", "-r", "requirements.txt", "--user"]  
 
   # Run unit tests
   - name: python:3.9
@@ -20,9 +20,15 @@ steps:
     args: ['push', 
            'gcr.io/${PROJECT_ID}/rickandmorty-api']
 
+  # Scan image
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    entrypoint: 'gcloud'
+    args: ['artifacts', 'docker', 'images', 'scan',
+           'gcr.io/${PROJECT_ID}/rickandmorty-api:latest']
+
   # Deploy
   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
     entrypoint: 'gcloud'
     args: ['run', 'deploy', 'rickandmorty-api',
-           '--image=gcr.io/${PROJECT_ID}/rickandmorty-api',
+           '--image=gcr.io/${PROJECT_ID}/rickandmorty-api:latest',
            '--region=us-central1']
