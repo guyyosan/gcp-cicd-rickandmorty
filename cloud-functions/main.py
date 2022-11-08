@@ -17,7 +17,7 @@ def slack_integration(data, context):
     cloud_build = json.loads(base64.b64decode(data["data"]))
 
     print("~~~")
-    print(cloud_build)
+    print(f"cloud_build {cloud_build}")
 
     if cloud_build["status"] not in ["SUCCESS", "FAILURE"]:
         return
