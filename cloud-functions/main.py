@@ -15,6 +15,10 @@ webhook = WebhookClient(slack_url)
 
 def slack_integration(data, context):
     cloud_build = json.loads(base64.b64decode(data["data"]))
+
+    print("~~~")
+    print(cloud_build)
+
     if cloud_build["status"] not in ["SUCCESS", "FAILURE"]:
         return
 
@@ -41,7 +45,7 @@ def slack_integration(data, context):
                     },
                     {
                         "type": "mrkdwn",
-                        "text": f"*Commit*: *<https://github.com/g-emarco/todo-demo/commit/{cloud_build['source']['repoSource']['commitSha']}|{cloud_build['source']['repoSource']['commitSha'][:-10]}>*",
+                        "text": f"*Commit*: *<{cloud_build['source']['repoSource']['commitSha']}|{cloud_build['source']['repoSource']['commitSha'][:-10]}>*",
                     },
                 ],
             },
