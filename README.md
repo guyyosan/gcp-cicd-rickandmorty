@@ -43,3 +43,4 @@ Currently only 1 workflow with 1 job - test:
 3. enable nginx ingress controller - configs a vm driver so we can enable nginx ingress for our minikube cluster
 4. build image, install chart - build image from docker and installs the chat on k8s
 5. test service - runs simple curl test to see healthcheck passes1
+1
