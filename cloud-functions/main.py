@@ -44,7 +44,11 @@ def slack_integration(data, context):
                     },
                     {
                         "type": "mrkdwn",
-                        "text": f"*Commit*: *<{cloud_build['source']['repoSource']['commitSha']}|{cloud_build['source']['repoSource']['commitSha'][:-10]}>*",
+                        "text": f"""
+                        *Repo*: *<{cloud_build['substitutions']['REPO_NAME']}>*
+                        *Branch*: *<{cloud_build['substitutions']['BRANCH_NAME']}>*
+                        *Commit*: *<{cloud_build['substitutions']['SHORT_SHA']}>*
+                        """,
                     },
                 ],
             },
