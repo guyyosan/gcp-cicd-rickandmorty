@@ -22,10 +22,10 @@ steps:
       - --cache=true
       - --cache-ttl=6h
 
-  # Docker Push
-  - name: 'gcr.io/cloud-builders/docker'
-    args: ['push', 
-           'gcr.io/${PROJECT_ID}/rickandmorty-api']
+  # # Docker Push
+  # - name: 'gcr.io/cloud-builders/docker'
+  #   args: ['push', 
+  #          'gcr.io/${PROJECT_ID}/rickandmorty-api']
 
   # Scan image
   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
