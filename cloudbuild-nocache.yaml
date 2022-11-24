@@ -23,7 +23,7 @@ steps:
   # Scan image
   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
     entrypoint: 'gcloud'
-    args: ['artifacts', 'docker', 'images', 'scan',
+    args: ['artifacts', 'docker', 'images', 'scan', '--async',
            'gcr.io/${PROJECT_ID}/rickandmorty-api:latest']
 
   # Deploy
