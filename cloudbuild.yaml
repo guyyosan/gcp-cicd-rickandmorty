@@ -23,7 +23,7 @@ steps:
   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
     entrypoint: 'gcloud'
     args: ['artifacts', 'docker', 'images', 'scan', '--async', '--remote',
-           'gcr.io/${PROJECT_ID}/rickandmorty-api:$(cat /workspace/sha256)']
+           'gcr.io/${PROJECT_ID}/rickandmorty-api']
 
   # Deploy
   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'

@@ -4,7 +4,7 @@ RUN pip install --upgrade pip
 RUN adduser --disabled-password appuser
 WORKDIR /usr/app
 COPY . .
-RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install -r requirements.txt
 RUN chown -R appuser:appuser /usr/app
 USER appuser
 EXPOSE 8000
