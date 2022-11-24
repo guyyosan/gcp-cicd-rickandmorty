@@ -9,11 +9,18 @@ steps:
     entrypoint: python
     args: ["-m", "unittest", "discover"] 
   
-  # Build
-  - name: 'gcr.io/cloud-builders/docker'
-    args: ['build', '-t', 
-           'gcr.io/${PROJECT_ID}/rickandmorty-api', 
-           '.']
+  # # Build
+  # - name: 'gcr.io/cloud-builders/docker'
+  #   args: ['build', '-t', 
+  #          'gcr.io/${PROJECT_ID}/rickandmorty-api', 
+  #          '.']
+
+  # Build with kaniko
+  - name: 'gcr.io/kaniko-project/executor:latest'
+    args:
+      - --destination=gcr.io/$PROJECT_ID/rickandmorty-api
+      - --cache=true
+      - --cache-ttl=6h
 
   # Docker Push
   - name: 'gcr.io/cloud-builders/docker'
