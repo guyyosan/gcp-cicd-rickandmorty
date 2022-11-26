@@ -49,7 +49,7 @@ steps:
     args: ['run', 'deploy', '$_PROJECT_NAME',
            '--image=gcr.io/${PROJECT_ID}/$_PROJECT_NAME:latest',
            '--region=us-central1']
-    waitFor: ['push']
+    waitFor: ['push', 'cache-cloud-sdk']
 
 
 substitutions:
