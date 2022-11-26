@@ -15,7 +15,7 @@ steps:
   # Run tests
   - name: 'gcr.io/cloud-builders/docker'
     args: [ 'run',
-            '$PROJECT_ID/$_PROJECT_NAME:latest', 
+            '$_PROJECT_NAME:latest', 
             'python -m unittest discover']
 
   # Docker Push
