@@ -4,8 +4,14 @@ steps:
     entrypoint: 'bash'
     args: ['-c', 'docker pull gcr.io/$PROJECT_ID/$_PROJECT_NAME:latest || exit 0']
 
+  - name: 'gcr.io/cloud-builders/docker'
+    entrypoint: 'bash'
+    args: ['-c', 'docker pull gcr.io/google.com/cloudsdktool/cloud-sdk']
+    waitFor: ['-']
+
   # Build
   - name: 'gcr.io/cloud-builders/docker'
+    id: build
     args: [ 'build',
             '-t', 'gcr.io/${PROJECT_ID}/$_PROJECT_NAME:latest', 
             '-t', '$_PROJECT_NAME:latest', 
@@ -17,11 +23,14 @@ steps:
     args: [ 'run', '--entrypoint', 'python',
             '$_PROJECT_NAME:latest', 
             '-m', 'unittest', 'discover']
-
+    waitFor: ['build']
+  
   # Docker Push
   - name: 'gcr.io/cloud-builders/docker'
+    id: push
     args: ['push', 
            'gcr.io/$PROJECT_ID/$_PROJECT_NAME:latest']
+    waitFor: ['build']
 
   ## Scan image - we can scan our image
   ## or have automatic scanning, refer to:
@@ -37,6 +46,9 @@ steps:
     args: ['run', 'deploy', '$_PROJECT_NAME',
            '--image=gcr.io/${PROJECT_ID}/$_PROJECT_NAME:latest',
            '--region=us-central1']
+    waitFor: ['push']
+
+
 substitutions:
   _PROJECT_NAME: 'rickandmorty-api'
 ## we can use higher cpu machines
