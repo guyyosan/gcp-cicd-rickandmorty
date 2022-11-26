@@ -13,14 +13,15 @@ steps:
 
   # Run tests
   - name: 'gcr.io/cloud-builders/docker'
-    args: [ 'run', 
-            'gcr.io/${PROJECT_ID}/$_PROJECT_NAME', 
+    args: [ 'exec',
+            '--user', 'appuser',
+            'gcr.io/$PROJECT_ID/$_PROJECT_NAME', 
             'python -m unittest discover']
 
   # Docker Push
   - name: 'gcr.io/cloud-builders/docker'
     args: ['push', 
-           'gcr.io/${PROJECT_ID}/$_PROJECT_NAME']
+           'gcr.io/$PROJECT_ID/$_PROJECT_NAME']
 
   ## Scan image - we can scan our image
   ## or have automatic scanning, refer to:
