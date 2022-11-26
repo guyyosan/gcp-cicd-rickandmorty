@@ -15,16 +15,16 @@ steps:
   - name: 'gcr.io/cloud-builders/docker'
     args: [ 'run', 
             'gcr.io/${PROJECT_ID}/$_PROJECT_NAME', 
-            '-m unittest discover']
+            'python -m unittest discover']
 
   # Docker Push
   - name: 'gcr.io/cloud-builders/docker'
     args: ['push', 
            'gcr.io/${PROJECT_ID}/$_PROJECT_NAME']
 
-  # Scan image - we can scan our image
-  # or have automatic scanning, refer to:
-  # https://cloud.google.com/container-analysis/docs/automated-scanning-howto
+  ## Scan image - we can scan our image
+  ## or have automatic scanning, refer to:
+  ## https://cloud.google.com/container-analysis/docs/automated-scanning-howto
   # - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
   #   entrypoint: 'gcloud'
   #   args: ['artifacts', 'docker', 'images', 'scan',
@@ -38,5 +38,6 @@ steps:
            '--region=us-central1']
 substitutions:
   _PROJECT_NAME: 'rickandmorty-api'
+## we can use higher cpu machines
 # options:
 #   machineType: 'N1_HIGHCPU_8'
