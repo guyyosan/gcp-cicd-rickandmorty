@@ -19,5 +19,4 @@ RUN chown -R appuser:appuser /usr/app
 
 USER appuser
 EXPOSE 8000
-ENTRYPOINT gunicorn
-CMD -w 1 -b 0.0.0.0:8000 server:app
+CMD ["gunicorn", "-w", "1", "-b", "0.0.0.0:8000", "server:app"]
