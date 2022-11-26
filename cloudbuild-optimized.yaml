@@ -6,22 +6,22 @@ steps:
 
   # Build
   - name: 'gcr.io/cloud-builders/docker'
-    args: ['build', '-t',
-           'gcr.io/${PROJECT_ID}/$_PROJECT_NAME:latest', 
-           '--cache-from', 'gcr.io/$PROJECT_ID/$_PROJECT_NAME:latest',
-           '.']
+    args: [ 'build',
+            '-t', 'gcr.io/${PROJECT_ID}/$_PROJECT_NAME:latest', 
+            '-t', '$_PROJECT_NAME:latest', 
+            '--cache-from', 'gcr.io/$PROJECT_ID/$_PROJECT_NAME:latest',
+            '.']
 
   # Run tests
   - name: 'gcr.io/cloud-builders/docker'
-    args: [ 'exec',
-            '--user', 'appuser',
-            'gcr.io/$PROJECT_ID/$_PROJECT_NAME:latest', 
+    args: [ 'run',
+            '$PROJECT_ID/$_PROJECT_NAME:latest', 
             'python -m unittest discover']
 
   # Docker Push
   - name: 'gcr.io/cloud-builders/docker'
     args: ['push', 
-           'gcr.io/$PROJECT_ID/$_PROJECT_NAME']
+           'gcr.io/$PROJECT_ID/$_PROJECT_NAME:latest']
 
   ## Scan image - we can scan our image
   ## or have automatic scanning, refer to:
