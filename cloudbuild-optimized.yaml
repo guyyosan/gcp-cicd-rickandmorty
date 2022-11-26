@@ -15,7 +15,7 @@ steps:
   - name: 'gcr.io/cloud-builders/docker'
     args: [ 'exec',
             '--user', 'appuser',
-            'gcr.io/$PROJECT_ID/$_PROJECT_NAME', 
+            'gcr.io/$PROJECT_ID/$_PROJECT_NAME:latest', 
             'python -m unittest discover']
 
   # Docker Push
