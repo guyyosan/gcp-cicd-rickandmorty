@@ -9,21 +9,22 @@ steps:
     entrypoint: python
     args: ["-m", "unittest", "discover"] 
   
+  # Build
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['build', '-t', 
+           'gcr.io/${PROJECT_ID}/rickandmorty-api', 
+           '.']
 
-
-  # Build with kaniko
-  - name: 'gcr.io/kaniko-project/executor:latest'
-    args:
-      - --destination=gcr.io/$PROJECT_ID/rickandmorty-api
-      - --cache=true
-      - --cache-ttl=6h
-      - --digest-file=/workspace/sha256
+  # Docker Push
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['push', 
+           'gcr.io/${PROJECT_ID}/rickandmorty-api']
 
   # Scan image
   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
     entrypoint: 'gcloud'
-    args: ['artifacts', 'docker', 'images', 'scan', '--async', '--remote',
-           'gcr.io/${PROJECT_ID}/rickandmorty-api']
+    args: ['artifacts', 'docker', 'images', 'scan', '--async',
+           'gcr.io/${PROJECT_ID}/rickandmorty-api:latest']
 
   # Deploy
   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
@@ -31,5 +32,3 @@ steps:
     args: ['run', 'deploy', 'rickandmorty-api',
            '--image=gcr.io/${PROJECT_ID}/rickandmorty-api:latest',
            '--region=us-central1']
-# options:
-#   machineType: 'N1_HIGHCPU_8'
