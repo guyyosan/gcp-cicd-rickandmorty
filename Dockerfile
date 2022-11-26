@@ -1,7 +1,11 @@
 # FROM python:3.9
+# use lean image
 FROM python:3.9.7-alpine3.14
-RUN pip install --upgrade pip
 
+RUN apk update && apk add python3-dev \
+                        gcc \
+                        libc-dev
+RUN pip install --upgrade pip
 RUN adduser --disabled-password appuser
 WORKDIR /usr/app
 COPY . .
