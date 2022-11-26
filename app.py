@@ -16,7 +16,7 @@ app = Flask(__name__)
 app.add_url_rule("/healthcheck", "healthcheck", view_func=lambda: health.run())
 app.add_url_rule("/environment", "environment", view_func=lambda: envdump.run())
 
-
+# he
 # TODO: flexible endpoint query params?
 @app.route("/chars/sp/<species>/st/<status>/o/<origin>", methods=["GET"])
 def get_chars(species, status, origin):
