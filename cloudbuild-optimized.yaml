@@ -1,22 +1,25 @@
 steps:
   # Pull to use as cache
   - name: 'gcr.io/cloud-builders/docker'
+    id: 'cache-img'
     entrypoint: 'bash'
     args: ['-c', 'docker pull gcr.io/$PROJECT_ID/$_PROJECT_NAME:latest || exit 0']
 
   - name: 'gcr.io/cloud-builders/docker'
+    id: 'cache-cloud-sdk'
     entrypoint: 'bash'
     args: ['-c', 'docker pull gcr.io/google.com/cloudsdktool/cloud-sdk']
     waitFor: ['-']
 
   # Build
   - name: 'gcr.io/cloud-builders/docker'
-    id: build
+    id: 'build'
     args: [ 'build',
             '-t', 'gcr.io/${PROJECT_ID}/$_PROJECT_NAME:latest', 
             '-t', '$_PROJECT_NAME:latest', 
             '--cache-from', 'gcr.io/$PROJECT_ID/$_PROJECT_NAME:latest',
             '.']
+    waitFor: ['cache']
 
   # Run tests
   - name: 'gcr.io/cloud-builders/docker'
@@ -27,7 +30,7 @@ steps:
   
   # Docker Push
   - name: 'gcr.io/cloud-builders/docker'
-    id: push
+    id: 'push'
     args: ['push', 
            'gcr.io/$PROJECT_ID/$_PROJECT_NAME:latest']
     waitFor: ['build']
