@@ -16,7 +16,7 @@ steps:
   - name: 'gcr.io/cloud-builders/docker'
     args: [ 'run', '--entrypoint', 'python',
             '$_PROJECT_NAME:latest', 
-            '-m unittest discover']
+            '-m', 'unittest', 'discover']
 
   # Docker Push
   - name: 'gcr.io/cloud-builders/docker'
