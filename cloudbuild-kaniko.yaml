@@ -6,12 +6,12 @@ steps:
 
 
   # Build with kaniko
-  # - name: 'gcr.io/kaniko-project/executor:latest'
-  #   args:
-  #     - --destination=gcr.io/$PROJECT_ID/rickandmorty-api
-  #     - --cache=true
-  #     - --cache-ttl=6h
-  #     - --digest-file=/workspace/sha256
+  - name: 'gcr.io/kaniko-project/executor:latest'
+    args:
+      - --destination=gcr.io/$PROJECT_ID/rickandmorty-api
+      - --cache=true
+      - --cache-ttl=6h
+      - --digest-file=/workspace/sha256
 
   # Scan image
   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'

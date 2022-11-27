@@ -12,6 +12,8 @@ RUN apk update && apk add python3-dev \
                         libc-dev
 
 WORKDIR /usr/app
+
+# adding requirement explicitly caches python dependencies
 ADD ./requirements.txt /usr/app/requirements.txt
 RUN pip install -r requirements.txt
 ADD . /usr/app
