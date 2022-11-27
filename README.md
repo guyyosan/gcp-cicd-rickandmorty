@@ -1,14 +1,29 @@
 # GCP CI/CD Demo rickandmorty app & Pipeline
 
-### how to build the docker image
+## how to build the docker image with Cloud Build
 gcloud builds submit -t gcr.io/$GCP_PROJECT/rickandmorty-api .
 
-### Build and deploy
+## Build and deploy with Cloud Build
+Trigger is already set on each push to build and deploy.
+For best performance use: cloudbuild-optimized.yaml (Cloud build config file)
 
-### how to run the image
+## Integrate slack
+* Create a slack app: https://api.slack.com/apps
+* Left menu: Features -> Incoming Webhooks
+    * Add New Webhook to Workspace
+    * Copy webhooks URL and save it as a secret in Secret Manager
+* Update the cloud function secret id in cloud-functions/main.py:7
+* Deploy the function
+
+### Deploy cloud function for slack integration
+`cd cloud-functions`
+
+`gcloud functions deploy slack_integration --stage-bucket gs://cloud-build-demo-363112_cloud_functions --trigger-topic cloud-builds --runtime python38 --ingress-settings internal-only`
+
+## how to run the image with docker
 docker run -p 8000:8000 rickandmorty
 
-### rest api endpoints
+## rest api endpoints
 * /chars/sp/<species>/st/<status>/o/<origin> | methods=["GET"]
 
 example:
@@ -16,25 +31,3 @@ example:
 
 * /healthcheck
 * /environment
-
-### deploy to k8s
-#### yamls
-If you need kubernetes yamls you can generate them using helm template command:
-
-`helm template rickandmorty ./helm/rickandmorty`
-
-#### helm
-helm install rickandmorty ./helm/rickandmorty --set service.type=NodePort --set ingress.enabled=false
-
-To use with minikube ingress:
-
-`minikube addons enable ingress`
-
-`helm install rickandmorty ./helm/rickandmorty`
-
-#### Steps
-1. checkout the repo
-2. setup minikube - uses external gh action https://github.com/marketplace/actions/setup-minikube-kubernetes-cluster
-3. enable nginx ingress controller - configs a vm driver so we can enable nginx ingress for our minikube cluster
-4. build image, install chart - build image from docker and installs the chat on k8s
-5. test service - runs simple curl test to see healthcheck passes
