@@ -4,7 +4,7 @@ import json
 from slack_sdk.webhook import WebhookClient
 import os
 
-secret_id = f"projects/1049042308740/secrets/rickandmorty-slack-token/versions/1"
+secret_id = f"projects/1049042308740/secrets/rickandmorty-slack-token/versions/2"
 client = secretmanager.SecretManagerServiceClient()
 
 response = client.access_secret_version(request={"name": secret_id})
