@@ -1,6 +1,3 @@
-# TODO: tests, move to flask rest plus, docs, oop
-
-# TODO: make it faster: parallel run per page, async design, pagination based on existing graphql pagination, caching
 
 from flask import Flask, jsonify
 import requests
