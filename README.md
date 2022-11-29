@@ -8,7 +8,7 @@ Trigger is already set on each push to build and deploy.
 For best performance use: cloudbuild-optimized.yaml (Cloud build config file)
 
 ## Integrate slack
-* create a pub/sub topic named 
+* create a pub/sub topic named: `cloud-builds`
 * Create a slack app: https://api.slack.com/apps
 * Left menu: Features -> Incoming Webhooks
     * Add New Webhook to Workspace
